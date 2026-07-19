@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Audience Detection - NexoSign AI</title>
+  <style>
+    body{font-family:Arial;background:#0b1020;color:white;margin:0;padding:20px;}
+    .container{max-width:1100px;margin:auto;}
+    h1{color:#7c3aed;}
+    .camera{height:420px;background:#111827;border-radius:20px;position:relative;overflow:hidden;margin:20px 0;}
+    .scan{position:absolute;top:0;left:0;width:100%;height:4px;background:#22c55e;animation:scan 3s linear infinite;}
+    @keyframes scan{0%{top:0;}100%{top:100%;}}
+    .box{position:absolute;border:3px solid #22c55e;border-radius:10px;}
+    .b1{top:80px;left:120px;width:160px;height:220px;}
+    .b2{top:120px;right:150px;width:140px;height:200px;}
+    .label{position:absolute;background:#22c55e;color:black;padding:4px 10px;border-radius:20px;font-weight:bold;font-size:14px;}
+    .l1{top:50px;left:120px;}
+    .l2{top:90px;right:150px;}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin-top:20px;}
+    .card{background:#111827;padding:20px;border-radius:15px;text-align:center;}
+    .value{font-size:32px;font-weight:bold;color:#22c55e;}
+    .content{background:#1f2937;padding:25px;border-radius:15px;margin-top:25px;}
+    .ai{background:#7c3aed;padding:3px 10px;border-radius:20px;font-size:12px;}
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🎯 AI Audience Detection - Live Demo</h1>
+  <p>Real-time audience analysis and personalized content switching.</p>
+
+  <div class="camera">
+    <div class="scan"></div>
+    <div class="box b1"></div>
+    <div class="box b2"></div>
+    <div class="label l1">Family</div>
+    <div class="label l2">Senior</div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div>Detected</div>
+      <div class="value" id="audience">Family</div>
+    </div>
+    <div class="card">
+      <div>Confidence</div>
+      <div class="value" id="confidence">94%</div>
+    </div>
+    <div class="card">
+      <div>Screen Time</div>
+      <div class="value" id="time">7.8s</div>
+    </div>
+    <div class="card">
+      <div>AI Action</div>
+      <div class="value" id="action">Switch</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="ai">AI GENERATED</div>
+    <h2>Content Selected by AI</h2>
+    <p><b>Audience Type:</b> <span id="type">Family with child</span></p>
+    <p><b>Displayed Content:</b> <span id="display">Vaccination Awareness</span></p>
+    <p><b>Next Recommendation:</b> <span id="next">Pediatric Checkup Offer</span></p>
+  </div>
+</div>
+
+<script>
+const data=[
+  {a:'Family',c:'94%',t:'7.8s',type:'Family with child',display:'Vaccination Awareness',next:'Pediatric Checkup Offer'},
+  {a:'Senior',c:'91%',t:'8.5s',type:'Senior citizen',display:'Cardiac Health Package',next:'Diabetes Screening'},
+  {a:'Young Adult',c:'89%',t:'6.9s',type:'Young professional',display:'Fitness Checkup',next:'Wellness Membership'}
+];
+let i=0;
+setInterval(()=>{
+  i=(i+1)%data.length;
+  const d=data[i];
+  document.getElementById('audience').innerText=d.a;
+  document.getElementById('confidence').innerText=d.c;
+  document.getElementById('time').innerText=d.t;
+  document.getElementById('type').innerText=d.type;
+  document.getElementById('display').innerText=d.display;
+  document.getElementById('next').innerText=d.next;
+},3000);
+</script>
+</body>
+</html>

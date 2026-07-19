@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexoSign AI AR Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:radial-gradient(circle at top,#0f172a,#020617);
+      color:white;
+      overflow:hidden;
+    }
+
+    .avatar{
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#2563eb,#22d3ee);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:70px;
+      margin:40px auto 20px;
+      animation:jump 2s infinite;
+      box-shadow:0 0 40px rgba(34,211,238,.45);
+    }
+
+    @keyframes jump{
+      0%,100%{transform:translateY(0);}
+      50%{transform:translateY(-25px);}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="text-center p-6">
+
+    <div class="avatar">🤖</div>
+
+    <h1 class="text-3xl font-extrabold">Welcome to NexoSign AI</h1>
+
+    <p class="text-gray-300 mt-3 text-lg">
+      Your AI-powered digital signage assistant is now active.
+    </p>
+
+    <div class="mt-8 grid grid-cols-2 gap-4 max-w-md mx-auto">
+
+      <div class="bg-white/10 rounded-2xl p-4">
+        <div class="text-2xl">🏥</div>
+        <div class="font-bold mt-2">Hospital Queue</div>
+      </div>
+
+      <div class="bg-white/10 rounded-2xl p-4">
+        <div class="text-2xl">🛍</div>
+        <div class="font-bold mt-2">Retail Offers</div>
+      </div>
+
+      <div class="bg-white/10 rounded-2xl p-4">
+        <div class="text-2xl">🍽</div>
+        <div class="font-bold mt-2">Restaurant Menus</div>
+      </div>
+
+      <div class="bg-white/10 rounded-2xl p-4">
+        <div class="text-2xl">🚨</div>
+        <div class="font-bold mt-2">Emergency Alerts</div>
+      </div>
+
+    </div>
+
+    <div class="mt-10 inline-block bg-cyan-500/20 border border-cyan-400/30 rounded-full px-5 py-2 text-cyan-300 font-semibold">
+      Powered by NexoSign AI
+    </div>
+
+  </div>
+
+</body>
+</html>

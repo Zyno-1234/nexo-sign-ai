@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexoSign AI Hologram</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body{
+      margin:0;
+      overflow:hidden;
+      background:radial-gradient(circle at center,#0f172a 0%,#020617 100%);
+      font-family:Inter,sans-serif;
+    }
+
+    .hologram{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:260px;
+      animation:float 3s ease-in-out infinite;
+      filter:drop-shadow(0 0 25px rgba(34,211,238,.6));
+    }
+
+    @keyframes float{
+      0%,100%{
+        transform:translate(-50%,-50%) translateY(0);
+      }
+      50%{
+        transform:translate(-50%,-50%) translateY(-18px);
+      }
+    }
+
+    .ring{
+      position:absolute;
+      left:50%;
+      top:70%;
+      width:220px;
+      height:220px;
+      border:2px solid rgba(34,211,238,.35);
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+      animation:spin 10s linear infinite;
+    }
+
+    @keyframes spin{
+      from{transform:translate(-50%,-50%) rotate(0deg);}
+      to{transform:translate(-50%,-50%) rotate(360deg);}
+    }
+
+    .glow{
+      position:absolute;
+      left:50%;
+      top:70%;
+      width:180px;
+      height:50px;
+      background:rgba(34,211,238,.35);
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+      filter:blur(18px);
+    }
+
+    .title{
+      position:absolute;
+      top:40px;
+      width:100%;
+      text-align:center;
+      color:#fff;
+    }
+
+    .title h1{
+      font-size:28px;
+      font-weight:800;
+      margin:0;
+      background:linear-gradient(90deg,#60a5fa,#22d3ee);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .title p{
+      color:#94a3b8;
+      margin-top:8px;
+      font-size:14px;
+    }
+
+    .badge{
+      position:absolute;
+      top:110px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(34,211,238,.12);
+      border:1px solid rgba(34,211,238,.3);
+      color:#67e8f9;
+      padding:8px 16px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+      backdrop-filter:blur(8px);
+    }
+
+    .controls{
+      position:absolute;
+      bottom:32px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .btn{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color:white;
+      padding:12px 18px;
+      border-radius:14px;
+      font-weight:700;
+      backdrop-filter:blur(10px);
+    }
+
+    .btn-primary{
+      background:linear-gradient(90deg,#2563eb,#22d3ee);
+      color:#001018;
+      border:none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="title">
+    <h1>NexoSign AI</h1>
+    <p>Interactive Hologram Experience</p>
+  </div>
+
+  <div class="badge">AI AVATAR ACTIVE</div>
+
+  <div class="ring"></div>
+  <div class="glow"></div>
+
+  <img
+    class="hologram"
+    src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png"
+    alt="AI Avatar"
+  >
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="speak()">▶ Speak Again</button>
+    <button class="btn" onclick="window.close()">✕ Close</button>
+  </div>
+
+  <script>
+    function speak(){
+      const msg = new SpeechSynthesisUtterance(
+        "Welcome to NexoSign AI. I am your interactive AI assistant. I can help hospitals, retail stores, restaurants, and corporate offices manage digital signage in real time."
+      );
+      msg.rate = 1;
+      msg.pitch = 1;
+      msg.volume = 1;
+      speechSynthesis.speak(msg);
+    }
+
+    setTimeout(speak, 800);
+  </script>
+
+</body>
+</html>

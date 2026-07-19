@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Engagement Analytics Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body{font-family:Arial;background:#0b1020;color:white;margin:0;padding:20px;}
+    .container{max-width:1200px;margin:auto;}
+    h1{color:#f59e0b;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;}
+    .card{background:#111827;padding:20px;border-radius:15px;text-align:center;}
+    .value{font-size:34px;font-weight:bold;color:#22c55e;}
+    .chartbox{background:#111827;padding:20px;border-radius:15px;margin-top:20px;}
+    .ai{background:#f59e0b;color:black;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:bold;}
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>📊 AI Engagement Analytics Dashboard</h1>
+  <p>Live performance metrics and AI recommendations.</p>
+
+  <div class="grid">
+    <div class="card"><div>Views</div><div class="value" id="views">12,458</div></div>
+    <div class="card"><div>Attention</div><div class="value" id="attention">8.4s</div></div>
+    <div class="card"><div>Best Screen</div><div class="value" id="screen">OPD-3</div></div>
+    <div class="card"><div>CTR</div><div class="value" id="ctr">18.6%</div></div>
+  </div>
+
+  <div class="chartbox">
+    <canvas id="chart"></canvas>
+  </div>
+
+  <div class="chartbox">
+    <div class="ai">AI RECOMMENDATION</div>
+    <h2>Best Performing Content</h2>
+    <p><b>Top Content:</b> Cardiac Package Ad</p>
+    <p><b>Engagement Score:</b> 92/100</p>
+    <p><b>Suggested Action:</b> Increase display frequency by 20%</p>
+    <p><b>Expected Improvement:</b> +18% engagement</p>
+  </div>
+</div>
+
+<script>
+const ctx=document.getElementById('chart');
+const chart=new Chart(ctx,{
+  type:'line',
+  data:{
+    labels:['9 AM','10 AM','11 AM','12 PM','1 PM','2 PM'],
+    datasets:[{
+      label:'Engagement',
+      data:[42,58,65,71,76,82],
+      borderColor:'#f59e0b',
+      backgroundColor:'rgba(245,158,11,0.2)',
+      fill:true,
+      tension:0.4
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{labels:{color:'white'}}},
+    scales:{
+      x:{ticks:{color:'white'}},
+      y:{ticks:{color:'white'},beginAtZero:true}
+    }
+  }
+});
+
+setInterval(()=>{
+  document.getElementById('views').innerText=(12458+Math.floor(Math.random()*50)).toLocaleString();
+  document.getElementById('attention').innerText=(7+Math.random()*2).toFixed(1)+'s';
+  document.getElementById('ctr').innerText=(17+Math.random()*3).toFixed(1)+'%';
+  chart.data.datasets[0].data.push(60+Math.floor(Math.random()*25));
+  chart.data.datasets[0].data.shift();
+  chart.update();
+},5000);
+</script>
+</body>
+</html>
