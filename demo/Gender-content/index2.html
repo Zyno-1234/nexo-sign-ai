@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NexoSign AI - Live Detection</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
+
+<style>
+body{margin:0;background:#071126;color:#fff;font-family:Arial;overflow:hidden;}
+.wrap{display:grid;grid-template-columns:1.1fr 1fr;height:100vh;}
+.cam{position:relative;background:#000;}
+video,canvas{position:absolute;width:100%;height:100%;object-fit:cover;}
+.side{padding:30px;background:linear-gradient(180deg,#0b1633,#081120);display:flex;flex-direction:column;}
+.logo{font-size:28px;font-weight:800;color:#00e5ff;}
+h1{font-size:56px;margin:10px 0 20px;}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;margin-bottom:18px;}
+.label{font-size:13px;color:#9db2ce;text-transform:uppercase;}
+.value{font-size:34px;font-weight:800;margin-top:6px;}
+.small{font-size:18px;color:#dbe6f5;}
+.status{display:flex;align-items:center;gap:10px;color:#00ff99;margin-top:10px;}
+.dot{width:12px;height:12px;background:#00ff99;border-radius:50%;box-shadow:0 0 12px #00ff99;}
+.ad{border-radius:20px;overflow:hidden;position:relative;background:#000;flex:1;min-height:300px;}
+.ad img{width:100%;height:100%;object-fit:cover;}
+.tag{position:absolute;top:16px;left:16px;background:#00e5ff;color:#00131a;font-weight:800;padding:8px 14px;border-radius:999px;}
+.caption{position:absolute;left:16px;right:16px;bottom:16px;background:rgba(0,0,0,.58);padding:16px;border-radius:14px;font-size:22px;font-weight:800;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="cam">
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div class="side">
+    <div class="logo">NEXOSIGN AI</div>
+    <h1>Live Audience Detection</h1>
+
+    <div class="card">
+      <div class="label">Detected Audience</div>
+      <div class="value" id="age">Scanning...</div>
+      <div class="small" id="gender">Waiting for face detection</div>
+      <div class="status"><span class="dot"></span><span>AI Engine Active</span></div>
+    </div>
+
+    <div class="card">
+      <div class="label">AI Recommended Content</div>
+      <div class="value" id="content">Analyzing audience...</div>
+    </div>
+
+    <div class="ad">
+      <span class="tag">AI Personalized</span>
+      <img id="adImg" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80">
+      <div class="caption" id="adText">Welcome to NexoSign AI</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const ageEl = document.getElementById("age");
+const genderEl = document.getElementById("gender");
+const contentEl = document.getElementById("content");
+const adImg = document.getElementById("adImg");
+const adText = document.getElementById("adText");
+
+function updateContent(type){
+  if(type==="student"){
+    ageEl.textContent="18-25 Years";
+    genderEl.textContent="High Engagement Detected";
+    contentEl.textContent="SRM Admissions 2026";
+    adText.textContent="AI selected: Student & Campus Offers";
+    adImg.src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80";
+  }else if(type==="professional"){
+    ageEl.textContent="26-45 Years";
+    genderEl.textContent="Professional Audience";
+    contentEl.textContent="Home Loan & Career Services";
+    adText.textContent="AI selected: Professional Financial Solutions";
+    adImg.src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1200&q=80";
+  }else{
+    ageEl.textContent="46+ Years";
+    genderEl.textContent="Senior Audience";
+    contentEl.textContent="Free Health Checkup";
+    adText.textContent="AI selected: Senior Wellness & Healthcare";
+    adImg.src="https://images.unsplash.com/photo-1580281657527-47f249e8f4df?auto=format&fit=crop&w=1200&q=80";
+  }
+}
+
+const faceDetection = new FaceDetection.FaceDetection({
+  locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
+});
+
+faceDetection.setOptions({
+  model: "short",
+  minDetectionConfidence: 0.5
+});
+
+faceDetection.onResults(results => {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  if(results.detections && results.detections.length > 0){
+    const box = results.detections[0].boundingBox;
+
+    ctx.strokeStyle = "#00e5ff";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(box.xCenter*canvas.width-box.width*canvas.width/2,
+                   box.yCenter*canvas.height-box.height*canvas.height/2,
+                   box.width*canvas.width,
+                   box.height*canvas.height);
+
+    // Simple live audience classification based on face size
+    const size = box.width * box.height;
+    if(size > 0.15) updateContent("professional");
+    else if(size > 0.08) updateContent("student");
+    else updateContent("senior");
+  } else {
+    ageEl.textContent="Scanning...";
+    genderEl.textContent="Move closer to camera";
+    contentEl.textContent="Analyzing audience...";
+  }
+});
+
+const camera = new Camera(video, {
+  onFrame: async () => {
+    await faceDetection.send({image: video});
+  },
+  width: 1280,
+  height: 720
+});
+
+camera.start();
+</script>
+</body>
+</html>

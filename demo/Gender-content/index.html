@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexoSign AI - Live Audience Detection</title>
+
+<script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<style>
+body{margin:0;font-family:Arial;background:#071126;color:#fff;overflow:hidden;}
+.wrap{display:grid;grid-template-columns:1.1fr 1fr;height:100vh;}
+.cam{position:relative;background:#000;}
+video{width:100%;height:100%;object-fit:cover;}
+.scan{position:absolute;top:10%;left:10%;width:80%;height:80%;border:3px solid #00e5ff;border-radius:20px;box-shadow:0 0 25px #00e5ff;animation:pulse 2s infinite;}
+@keyframes pulse{0%{transform:scale(.98)}50%{transform:scale(1)}100%{transform:scale(.98)}}
+.side{padding:28px;background:linear-gradient(180deg,#0b1633,#081120);display:flex;flex-direction:column;}
+.logo{font-size:28px;font-weight:800;color:#00e5ff;}
+h1{font-size:56px;line-height:1.05;margin:10px 0 20px;}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;margin-bottom:18px;}
+.label{font-size:13px;color:#9db2ce;text-transform:uppercase;letter-spacing:1px;}
+.value{font-size:34px;font-weight:800;margin-top:6px;}
+.small{font-size:18px;color:#dbe6f5;}
+.status{display:flex;align-items:center;gap:10px;color:#00ff99;margin-top:10px;font-size:18px;}
+.dot{width:12px;height:12px;background:#00ff99;border-radius:50%;box-shadow:0 0 12px #00ff99;}
+.ad{border-radius:20px;overflow:hidden;position:relative;background:#000;flex:1;min-height:300px;}
+.ad img{width:100%;height:100%;object-fit:cover;display:block;}
+.tag{position:absolute;top:16px;left:16px;background:#00e5ff;color:#00131a;font-weight:800;padding:8px 14px;border-radius:999px;}
+.caption{position:absolute;left:16px;right:16px;bottom:16px;background:rgba(0,0,0,.58);padding:16px;border-radius:14px;font-size:22px;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="cam">
+    <video id="video" autoplay muted playsinline></video>
+    <div class="scan"></div>
+  </div>
+
+  <div class="side">
+    <div class="logo">NEXOSIGN AI</div>
+    <h1>Live Audience Detection</h1>
+
+    <div class="card">
+      <div class="label">Detected Audience</div>
+      <div class="value" id="age">Initializing AI...</div>
+      <div class="small" id="gender">Loading models</div>
+      <div class="status"><span class="dot"></span><span>AI Engine Active</span></div>
+    </div>
+
+    <div class="card">
+      <div class="label">AI Recommended Content</div>
+      <div class="value" id="content">Analyzing audience...</div>
+    </div>
+
+    <div class="ad">
+      <span class="tag">AI Personalized</span>
+      <img id="adImg" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80">
+      <div class="caption" id="adText">Welcome to NexoSign AI</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const video = document.getElementById('video');
+const ageEl = document.getElementById('age');
+const genderEl = document.getElementById('gender');
+const contentEl = document.getElementById('content');
+const adImg = document.getElementById('adImg');
+const adText = document.getElementById('adText');
+
+async function startCamera(){
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video:{ width:1280, height:720, facingMode:"user" }
+  });
+  video.srcObject = stream;
+}
+
+async function loadModels(){
+  /*const MODEL_URL = "https://justadudewhohacks.github.io/face-api.js/models"; */
+  const MODEL_URL = "https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights";
+
+  await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+  await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL);
+}
+
+function updateContent(age){
+  if(age <= 25){
+    contentEl.textContent = "SRM Admissions 2026";
+    adText.textContent = "AI selected: Student & Campus Offers";
+    adImg.src = "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80";
+  }
+  else if(age <= 45){
+    contentEl.textContent = "Home Loan & Career Services";
+    adText.textContent = "AI selected: Professional Financial Solutions";
+    adImg.src = "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1200&q=80";
+  }
+  else {
+    contentEl.textContent = "Free Health Checkup";
+    adText.textContent = "AI selected: Senior Wellness & Healthcare";
+    adImg.src = "https://images.unsplash.com/photo-1580281657527-47f249e8f4df?auto=format&fit=crop&w=1200&q=80";
+  }
+}
+
+async function detectLoop(){
+  setInterval(async () => {
+    try{
+      const detection = await faceapi
+        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
+        .withAgeAndGender();
+
+      if(detection){
+        const age = Math.round(detection.age);
+        const gender = detection.gender.charAt(0).toUpperCase() + detection.gender.slice(1);
+        const conf = Math.round(detection.genderProbability * 100);
+
+        ageEl.textContent = age + " Years";
+        genderEl.textContent = gender + " • Confidence " + conf + "%";
+
+        updateContent(age);
+      } else {
+        ageEl.textContent = "Scanning...";
+        genderEl.textContent = "Move closer to camera";
+      }
+    }catch(err){
+      console.log(err);
+    }
+  }, 1200);
+}
+
+(async function(){
+  try{
+    await startCamera();
+    ageEl.textContent = "Loading AI Models...";
+    genderEl.textContent = "Please wait";
+
+    await loadModels();
+
+    ageEl.textContent = "Scanning...";
+    genderEl.textContent = "Face detection ready";
+
+    detectLoop();
+  }catch(e){
+    ageEl.textContent = "Camera Error";
+    genderEl.textContent = e.message;
+  }
+})();
+</script>
+</body>
+</html>
