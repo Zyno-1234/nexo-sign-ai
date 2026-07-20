@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0">
+
+    <title>NEXO AI Audience Detection</title>
+
+    <link rel="stylesheet"
+          href="style.css">
+
+    <!-- face-api -->
+    <script defer
+        src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js">
+    </script>
+
+    <script defer src="app.js"></script>
+
+</head>
+
+<body>
+
+<div id="loader">
+
+    <div class="spinner"></div>
+
+    <h2>Loading AI Models...</h2>
+
+    <p>Please wait</p>
+
+</div>
+
+<div id="app">
+
+<!-- LEFT PANEL -->
+
+<section id="cameraSection">
+
+<div class="titleBar">
+
+<h1>
+
+NEXO AI Audience Detection
+
+</h1>
+
+<div id="status">
+
+Loading...
+
+</div>
+
+</div>
+
+
+<div id="cameraContainer">
+
+<video
+id="video"
+autoplay
+muted
+playsinline>
+</video>
+
+<canvas
+id="overlay">
+</canvas>
+
+</div>
+
+</section>
+
+
+<!-- RIGHT PANEL -->
+
+<section id="dashboard">
+
+<div class="card">
+
+<h2>
+
+Live Viewer
+
+</h2>
+
+<div class="row">
+
+<label>Gender</label>
+
+<span id="gender">
+
+-
+
+</span>
+
+</div>
+
+<div class="row">
+
+<label>Age</label>
+
+<span id="age">
+
+-
+
+</span>
+
+</div>
+
+<div class="row">
+
+<label>Confidence</label>
+
+<span id="confidence">
+
+-
+
+</span>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+
+Audience Analytics
+
+</h2>
+
+<div class="row">
+
+<label>Current Viewers</label>
+
+<span id="viewerCount">
+
+0
+
+</span>
+
+</div>
+
+<div class="row">
+
+<label>Male</label>
+
+<span id="maleCount">
+
+0
+
+</span>
+
+</div>
+
+<div class="row">
+
+<label>Female</label>
+
+<span id="femaleCount">
+
+0
+
+</span>
+
+</div>
+
+<div class="row">
+
+<label>Average Age</label>
+
+<span id="averageAge">
+
+0
+
+</span>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+
+Current Campaign
+
+</h2>
+
+<div id="campaignName">
+
+Default Campaign
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+
+AI Log
+
+</h2>
+
+<div id="logs">
+
+Waiting...
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- DIGITAL SIGNAGE -->
+
+<div id="campaignContainer">
+
+<img
+id="campaignImage"
+src="assets/default.jpg">
+
+<div id="campaignOverlay">
+
+<div id="campaignTitle">
+
+Welcome
+
+</div>
+
+<div id="campaignSubtitle">
+
+AI Powered Digital Signage
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
