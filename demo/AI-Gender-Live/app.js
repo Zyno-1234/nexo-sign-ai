@@ -224,82 +224,68 @@ function startDetection(){
 
 async function detectAudience(){
 
-    const detections=
-    await faceapi
-    .detectAllFaces(
-        video,
-        new faceapi.TinyFaceDetectorOptions({
-            inputSize:320,
-            scoreThreshold:0.5
-        })
-    )
-    .withAgeAndGender();
+    try{
 
-    const resized=
-    faceapi.resizeResults(
-        detections,
-        displaySize
-    );
+        const detections = await faceapi
+            .detectAllFaces(
+                video,
+                new faceapi.TinyFaceDetectorOptions({
+                    inputSize: 416,
+                    scoreThreshold: 0.35
+                })
+            )
+            .withAgeAndGender();
 
-    const ctx=canvas.getContext("2d");
+        const resized = faceapi.resizeResults(detections, displaySize);
 
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+        const ctx = canvas.getContext("2d");
 
-    viewerCount.innerText=resized.length;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    if(resized.length===0){
+        viewerCount.innerText = resized.length;
 
-        showDefaultCampaign();
+        if(resized.length===0){
 
-        genderLabel.innerText="-";
-        ageLabel.innerText="-";
-        confidenceLabel.innerText="-";
+            showDefaultCampaign();
 
-        return;
+            genderLabel.innerText="-";
+            ageLabel.innerText="-";
+            confidenceLabel.innerText="-";
+
+            return;
+        }
+
+        let ageTotal = 0;
+
+        resized.forEach(face=>{
+
+            const box = face.detection.box;
+            const gender = face.gender;
+            const age = Math.round(face.age);
+            const score = Math.round(face.genderProbability*100);
+
+            ageTotal += age;
+
+            drawFace(ctx,box,gender,age,score);
+
+            updateDashboard(gender,age,score);
+
+        });
+
+        averageAge.innerText = Math.round(ageTotal/resized.length);
+
+    }
+    catch(err){
+
+        console.error("Detection Error:", err);
+        log(err.message);
 
     }
 
-    let ageTotal=0;
-
-    resized.forEach(face=>{
-
-        const box=face.detection.box;
-
-        const gender=face.gender;
-
-        const age=Math.round(face.age);
-
-        const score=Math.round(face.genderProbability*100);
-
-        ageTotal+=age;
-
-        drawFace(
-            ctx,
-            box,
-            gender,
-            age,
-            score
-        );
-
-        updateDashboard(
-            gender,
-            age,
-            score
-        );
-
-    });
-
-    averageAge.innerText=
-    Math.round(
-        ageTotal/resized.length
-    );
-
 }
+
+
+
 
 
 //==============================
