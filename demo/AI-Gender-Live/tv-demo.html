@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NEXO AI - TV Demo</title>
+
+    <link rel="stylesheet" href="tv-demo.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ==========================
+             HEADER
+        =========================== -->
+
+        <header class="header">
+
+            <div class="logo">
+
+                <h1>NEXO AI</h1>
+                <span>Smart Audience Intelligence</span>
+
+            </div>
+
+            <div class="status">
+
+                <div class="ai-status">
+                    <span class="dot"></span>
+                    AI ACTIVE
+                </div>
+
+                <div id="clock">
+                    10:30 AM
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ==========================
+              MAIN CONTENT
+        =========================== -->
+
+        <main class="main-layout">
+
+            <!-- Campaign -->
+
+            <section class="campaign">
+
+                <img id="campaignImage"
+                    src="images/default.png"
+                    alt="Campaign">
+
+                <div class="campaign-overlay">
+
+                    <h2 id="campaignTitle">
+                        Welcome to NEXO AI
+                    </h2>
+
+                    <p id="campaignSubtitle">
+                        Smart Digital Signage Platform
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- AI Information -->
+
+            <aside class="ai-panel">
+
+                <div class="camera-card">
+
+                    <video
+                        id="video"
+                        autoplay
+                        muted
+                        playsinline>
+                    </video>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-item">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        <span>Gender</span>
+
+                        <strong id="gender">
+                            --
+                        </strong>
+
+                    </div>
+
+                    <div class="info-item">
+
+                        <i class="fa-solid fa-cake-candles"></i>
+
+                        <span>Age</span>
+
+                        <strong id="age">
+                            --
+                        </strong>
+
+                    </div>
+
+                    <div class="info-item">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        <span>Confidence</span>
+
+                        <strong id="confidence">
+                            --
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </main>
+
+
+
+        <!-- ==========================
+               FOOTER
+        =========================== -->
+
+        <footer class="footer">
+
+            <div class="welcome">
+
+                👋 Welcome!
+
+            </div>
+
+            <div class="qr">
+
+                QR CODE
+
+            </div>
+
+        </footer>
+
+    </div>
+
+    <script src="tv-demo.js"></script>
+
+</body>
+</html>

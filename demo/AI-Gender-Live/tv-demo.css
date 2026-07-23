@@ -1,0 +1,388 @@
+/*=========================================================
+  NEXO AI TV Demo
+  Version : 1.0
+=========================================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    --bg:#07111f;
+    --card:#111d2d;
+    --card2:#18283d;
+
+    --primary:#00D4FF;
+    --success:#22c55e;
+    --warning:#f59e0b;
+
+    --white:#ffffff;
+    --text:#d8e3f0;
+    --muted:#8ca3b9;
+
+    --radius:18px;
+
+}
+
+html,
+body{
+
+    width:100%;
+    height:100%;
+
+    overflow:hidden;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background:var(--bg);
+
+    color:var(--white);
+
+}
+
+.app{
+
+    width:100vw;
+    height:100vh;
+
+    display:grid;
+
+    grid-template-rows:
+
+        80px
+
+        1fr
+
+        90px;
+
+}
+
+
+
+/*=========================================
+ HEADER
+=========================================*/
+
+.header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 40px;
+
+    background:#0d1828;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.logo h1{
+
+    font-size:clamp(28px,2vw,42px);
+
+    letter-spacing:2px;
+
+    color:var(--primary);
+
+}
+
+.logo span{
+
+    color:var(--muted);
+
+    font-size:clamp(12px,1vw,18px);
+
+}
+
+.status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:30px;
+
+}
+
+.ai-status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:20px;
+
+}
+
+.dot{
+
+    width:12px;
+    height:12px;
+
+    border-radius:50%;
+
+    background:var(--success);
+
+    animation:pulse 1.8s infinite;
+
+}
+
+#clock{
+
+    font-size:26px;
+    font-weight:600;
+
+}
+
+
+
+/*=========================================
+ MAIN
+=========================================*/
+
+.main-layout{
+
+    display:grid;
+
+    grid-template-columns:
+
+        3fr
+
+        1fr;
+
+    gap:25px;
+
+    padding:25px;
+
+}
+
+
+
+/*=========================================
+ Campaign
+=========================================*/
+
+.campaign{
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:var(--radius);
+
+    background:#000;
+
+}
+
+.campaign img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.campaign-overlay{
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    padding:40px;
+
+    background:linear-gradient(
+        transparent,
+        rgba(0,0,0,.85)
+    );
+
+}
+
+.campaign-overlay h2{
+
+    font-size:clamp(38px,3vw,70px);
+
+    margin-bottom:10px;
+
+}
+
+.campaign-overlay p{
+
+    font-size:clamp(18px,1.5vw,30px);
+
+}
+
+
+
+/*=========================================
+ AI PANEL
+=========================================*/
+
+.ai-panel{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+}
+
+.camera-card,
+.info-card{
+
+    background:var(--card);
+
+    border-radius:var(--radius);
+
+    padding:20px;
+
+}
+
+.camera-card{
+
+    height:300px;
+
+}
+
+.camera-card video{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+}
+
+.info-card{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-evenly;
+
+}
+
+.info-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    font-size:clamp(20px,1.5vw,34px);
+
+    padding:15px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.info-item:last-child{
+
+    border:none;
+
+}
+
+.info-item i{
+
+    color:var(--primary);
+
+    width:35px;
+
+}
+
+
+
+/*=========================================
+ FOOTER
+=========================================*/
+
+.footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 35px;
+
+    background:#0d1828;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+}
+
+.welcome{
+
+    font-size:clamp(24px,1.5vw,34px);
+
+}
+
+.qr{
+
+    width:90px;
+    height:90px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+
+    background:white;
+
+    color:black;
+
+    font-weight:bold;
+
+}
+
+
+
+/*=========================================
+ Animation
+=========================================*/
+
+@keyframes pulse{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.35);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
