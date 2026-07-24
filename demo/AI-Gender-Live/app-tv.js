@@ -86,7 +86,9 @@ const campaigns = {
 
 function log(message){
 
-    console.log(message);
+ console.log(message);
+
+    if(!logs) return;
 
     const time = new Date().toLocaleTimeString();
 
@@ -104,8 +106,11 @@ function log(message){
 
 function setStatus(text,color){
 
-    statusBox.innerText = text;
-    statusBox.style.background = color;
+
+    if(!statusBox) return;
+
+    statusBox.innerText=text;
+    statusBox.style.background=color;
 
 }
 
@@ -125,6 +130,7 @@ async function loadModels(){
 
     setStatus("AI Ready","#16a34a");
 
+    if(loader)
     loader.style.display="none";
 
     log("AI Models Loaded Successfully");
@@ -205,10 +211,14 @@ function startDetection(){
         height:video.videoHeight
     };
 
+if(canvas){
+
     canvas.width=displaySize.width;
     canvas.height=displaySize.height;
 
     faceapi.matchDimensions(canvas,displaySize);
+
+}
 
     if(detectionRunning) return;
 
@@ -238,11 +248,19 @@ async function detectAudience(){
 
         const resized = faceapi.resizeResults(detections, displaySize);
 
-        const ctx = canvas.getContext("2d");
+  let ctx = null;
 
-        ctx.clearRect(0,0,canvas.width,canvas.height);
+if(canvas){
 
-        viewerCount.innerText = resized.length;
+    ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+}
+
+       if(viewerCount)
+    viewerCount.innerText = resized.length;
+
 
         if(resized.length===0){
 
@@ -266,7 +284,8 @@ async function detectAudience(){
 
             ageTotal += age;
 
-            drawFace(ctx,box,gender,age,score);
+            if(ctx)
+    drawFace(ctx,box,gender,age,score);
 
             updateDashboard(gender,age,score);
 
@@ -339,20 +358,26 @@ function drawFace(ctx,box,gender,age,score){
 
 function updateDashboard(gender, age, score){
 
-    genderLabel.innerText = gender.charAt(0).toUpperCase() + gender.slice(1);
+    if(genderLabel)
+        genderLabel.innerText =
+            gender.charAt(0).toUpperCase()+gender.slice(1);
 
-    ageLabel.innerText = age + " Years";
+    if(ageLabel)
+        ageLabel.innerText = age+" Years";
 
-    confidenceLabel.innerText = score + "%";
+    if(confidenceLabel)
+        confidenceLabel.innerText = score+"%";
 
-    if(gender === "male"){
+    if(gender==="male")
         totalMale++;
-    }else{
+    else
         totalFemale++;
-    }
 
-    maleCount.innerText = totalMale;
-    femaleCount.innerText = totalFemale;
+    if(maleCount)
+        maleCount.innerText=totalMale;
+
+    if(femaleCount)
+        femaleCount.innerText=totalFemale;
 
     switchCampaign(gender);
 
@@ -365,48 +390,52 @@ function updateDashboard(gender, age, score){
 
 function switchCampaign(gender){
 
-    const now = Date.now();
+    const now=Date.now();
 
-    if(currentCampaign === gender)
-        return;
+    if(currentCampaign===gender) return;
 
-    if(now - lastCampaignChange < CAMPAIGN_HOLD_TIME)
-        return;
+    if(now-lastCampaignChange<CAMPAIGN_HOLD_TIME) return;
 
-    currentCampaign = gender;
+    currentCampaign=gender;
+    lastCampaignChange=now;
 
-    lastCampaignChange = now;
+    const campaign=campaigns[gender];
 
-    const campaign = campaigns[gender];
+    if(campaignImage)
+        campaignImage.src=campaign.image;
 
-    campaignImage.src = campaign.image;
+    if(campaignTitle)
+        campaignTitle.innerText=campaign.title;
 
-    campaignTitle.innerText = campaign.title;
+    if(campaignSubtitle)
+        campaignSubtitle.innerText=campaign.subtitle;
 
-    campaignSubtitle.innerText = campaign.subtitle;
+    if(campaignName)
+        campaignName.innerText=campaign.title;
 
-    campaignName.innerText = campaign.title;
-
-    log("Campaign Changed : " + campaign.title);
+    log("Campaign Changed : "+campaign.title);
 
 }
 
 
-
 function showDefaultCampaign(){
 
-    if(currentCampaign === "default")
+    if(currentCampaign==="default")
         return;
 
-    currentCampaign = "default";
+    currentCampaign="default";
 
-    campaignImage.src = campaigns.default.image;
+    if(campaignImage)
+        campaignImage.src=campaigns.default.image;
 
-    campaignTitle.innerText = campaigns.default.title;
+    if(campaignTitle)
+        campaignTitle.innerText=campaigns.default.title;
 
-    campaignSubtitle.innerText = campaigns.default.subtitle;
+    if(campaignSubtitle)
+        campaignSubtitle.innerText=campaigns.default.subtitle;
 
-    campaignName.innerText = campaigns.default.title;
+    if(campaignName)
+        campaignName.innerText=campaigns.default.title;
 
 }
 

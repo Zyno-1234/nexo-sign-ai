@@ -192,6 +192,12 @@ body{
 
     object-fit:cover;
 
+    transition:
+        opacity .6s ease,
+        transform .6s ease;
+
+    opacity:1;
+
 }
 
 .campaign-overlay{
@@ -202,12 +208,25 @@ body{
     right:0;
     bottom:0;
 
-    padding:40px;
+    padding:45px;
 
     background:linear-gradient(
-        transparent,
-        rgba(0,0,0,.85)
+
+        rgba(0,0,0,0),
+
+        rgba(0,0,0,.35),
+
+        rgba(0,0,0,.92)
+
     );
+
+}
+
+.campaign{
+
+    box-shadow:
+
+        0 20px 60px rgba(0,0,0,.45);
 
 }
 
@@ -244,11 +263,20 @@ body{
 .camera-card,
 .info-card{
 
-    background:var(--card);
+    background:linear-gradient(
+        180deg,
+        #15263d,
+        #0f1b2d
+    );
 
     border-radius:var(--radius);
 
     padding:20px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.35);
 
 }
 
@@ -384,5 +412,25 @@ body{
         transform:scale(1);
 
     }
+
+}
+
+/*=========================================
+ Campaign Animation
+=========================================*/
+
+.fade-out{
+
+    opacity:0 !important;
+
+    transform:scale(1.02);
+
+}
+
+.fade-in{
+
+    opacity:1 !important;
+
+    transform:scale(1);
 
 }
