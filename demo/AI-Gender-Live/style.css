@@ -202,3 +202,52 @@ canvas{
 }
 
 }
+
+
+.selection-container{
+
+    height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:40px;
+
+}
+
+.industry-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,220px);
+
+    gap:30px;
+
+}
+
+.industry-card{
+
+    height:150px;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    border-radius:12px;
+
+}
+
+.industry-card span{
+
+    display:block;
+
+    margin-top:15px;
+
+    font-size:20px;
+
+}
