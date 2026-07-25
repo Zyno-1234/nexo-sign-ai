@@ -67,27 +67,31 @@ async function loadCampaignConfig() {
 
     try {
 
-       const response = await fetch(`config/${industry}.json`);
+        const response = await fetch(`config/${industry}.json`);
 
         if (!response.ok) {
             throw new Error(`Unable to load ${industry}.json`);
         }
 
-        campaigns = await response.json();
+        const text = await response.text();
+
+        console.log("Industry:", industry);
+        console.log("Raw JSON:");
+        console.log(text);
+
+        campaigns = JSON.parse(text);
 
         console.log("Campaign Config Loaded");
-
         console.log(campaigns);
 
     }
     catch (err) {
 
-        console.error(err);
+        console.error("JSON ERROR:", err);
 
     }
 
 }
-
 //==============================
 // Logger
 //==============================
@@ -95,6 +99,7 @@ async function loadCampaignConfig() {
 function log(message){
 
     console.log("[NEXO AI]",message);
+
 
 }
 
