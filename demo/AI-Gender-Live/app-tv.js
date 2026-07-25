@@ -9,7 +9,9 @@
 const industry =    localStorage.getItem("selectedIndustry") || "hospital";
 
 const MEDIA_PATH = `media/${industry}`;
-const MODEL_URL = "models";
+
+
+const MODEL_URL = "./models";
 
 // ================================
 // Load Industry Configuration
