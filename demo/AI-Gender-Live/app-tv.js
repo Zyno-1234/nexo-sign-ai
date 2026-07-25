@@ -7,14 +7,23 @@ const MEDIA_PATH = `media/${industry}`;
 const MODEL_URL = "./models";
 
 
-const MIN_CONFIDENCE = 0.80;
+//const MIN_CONFIDENCE = 0.80;
 
-const DETECTION_INTERVAL = 300;
-const CAMPAIGN_HOLD_TIME = 1000;
-const NO_FACE_TIMEOUT = 2000;
+//const DETECTION_INTERVAL = 300;
+//const CAMPAIGN_HOLD_TIME = 1000;
+//const NO_FACE_TIMEOUT = 2000;
+//const STABLE_DETECTION_COUNT = 2;
+
+
+const MIN_CONFIDENCE = 0.65;
+
+const DETECTION_INTERVAL = 150;
+
 const STABLE_DETECTION_COUNT = 2;
 
+const CAMPAIGN_HOLD_TIME = 1000;
 
+const NO_FACE_TIMEOUT = 1000;
 //==============================
 // DOM
 //==============================
@@ -197,8 +206,8 @@ async function detectAudience(){
             .detectSingleFace(
                 video,
                 new faceapi.TinyFaceDetectorOptions({
-                    inputSize:416,
-                    scoreThreshold:0.35
+                    inputSize:320,
+                    scoreThreshold:0.25
                 })
             )
             .withAgeAndGender();
