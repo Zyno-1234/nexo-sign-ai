@@ -6,12 +6,13 @@ const industry = localStorage.getItem("selectedIndustry") || "hospital";
 const MEDIA_PATH = `media/${industry}`;
 const MODEL_URL = "./models";
 
-const DETECTION_INTERVAL = 500;
+
 const MIN_CONFIDENCE = 0.80;
 
-const CAMPAIGN_HOLD_TIME = 3000;
-const NO_FACE_TIMEOUT = 10000;
-const STABLE_DETECTION_COUNT = 3;
+const DETECTION_INTERVAL = 300;
+const CAMPAIGN_HOLD_TIME = 1000;
+const NO_FACE_TIMEOUT = 2000;
+const STABLE_DETECTION_COUNT = 2;
 
 
 //==============================
@@ -19,6 +20,7 @@ const STABLE_DETECTION_COUNT = 3;
 //==============================
 
 const video = document.getElementById("video");
+
 
 const genderLabel = document.getElementById("gender");
 const ageLabel = document.getElementById("age");
