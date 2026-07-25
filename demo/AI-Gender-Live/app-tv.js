@@ -1,29 +1,16 @@
 // -----------------------------------------
 // Industry Selection
-// Example:
-// tv-demo.html?industry=hospital
-// tv-demo.html?industry=salon
 // -----------------------------------------
 
-
-const industry =    localStorage.getItem("selectedIndustry") || "hospital";
+const industry = localStorage.getItem("selectedIndustry") || "hospital";
 const MEDIA_PATH = `media/${industry}`;
 const MODEL_URL = "./models";
-
-
-// ================================
-// Load Industry Configuration
-// ================================
-
-
-// Media root folder
 
 const DETECTION_INTERVAL = 500;
 const MIN_CONFIDENCE = 0.80;
 
 const CAMPAIGN_HOLD_TIME = 3000;
 const NO_FACE_TIMEOUT = 10000;
-
 const STABLE_DETECTION_COUNT = 3;
 
 
