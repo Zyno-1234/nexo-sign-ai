@@ -7,20 +7,14 @@
 
 
 const industry =    localStorage.getItem("selectedIndustry") || "hospital";
-
 const MEDIA_PATH = `media/${industry}`;
-
-
 const MODEL_URL = "./models";
+
 
 // ================================
 // Load Industry Configuration
 // ================================
 
-const industry =
-    localStorage.getItem("selectedIndustry") || "hospital";
-
-const MEDIA_PATH = `media/${industry}`;
 
 // Media root folder
 
