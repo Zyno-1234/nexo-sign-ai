@@ -1,13 +1,27 @@
-/**********************************************************************
- * NEXO AI Audience Detection
- * Version 2.0
- **********************************************************************/
+// -----------------------------------------
+// Industry Selection
+// Example:
+// tv-demo.html?industry=hospital
+// tv-demo.html?industry=salon
+// -----------------------------------------
 
-//==============================
-// Configuration
-//==============================
 
-const MODEL_URL = "./models";
+const industry =    localStorage.getItem("selectedIndustry") || "hospital";
+
+const MEDIA_PATH = `media/${industry}`;
+
+// ================================
+// Load Industry Configuration
+// ================================
+
+const selectedIndustry =
+    localStorage.getItem("selectedIndustry") || "hospital";
+
+let industryConfig = null;
+
+
+
+// Media root folder
 
 const DETECTION_INTERVAL = 500;
 const MIN_CONFIDENCE = 0.80;
@@ -54,50 +68,43 @@ let lastDetectedCampaign = "";
 // Campaigns
 //==============================
 
-const campaigns = {
+// Campaigns loaded dynamically
+let campaigns = {};
 
-    default:{
 
-        image:"images/default.png",
 
-        title:"Welcome to NEXO AI",
 
-        subtitle:"Smart Digital Signage Platform"
 
-    },
 
-    male:{
 
-        image:"images/male.png",
+//==============================
+// Load the JSON configuration
+//==============================
 
-        title:"Executive Men's Health Check",
+async function loadCampaignConfig() {
 
-        subtitle:"Protect Your Health Before It Becomes A Problem"
+    try {
 
-    },
+       const response = await fetch(`config/${industry}.json`);
 
-    female:{
+        if (!response.ok) {
+            throw new Error(`Unable to load ${industry}.json`);
+        }
 
-        image:"images/female.png",
+        campaigns = await response.json();
 
-        title:"Women's Wellness Package",
+        console.log("Campaign Config Loaded");
 
-        subtitle:"Your Health. Your Strength."
+        console.log(campaigns);
 
-    },
+    }
+    catch (err) {
 
-    kids:{
-
-        image:"images/kids.png",
-
-        title:"Kids Health Camp",
-
-        subtitle:"Healthy Kids. Happy Families."
+        console.error(err);
 
     }
 
-};
-
+}
 
 //==============================
 // Logger
@@ -169,24 +176,15 @@ async function startCamera(){
 // Initialize
 //==============================
 
-async function initialize(){
+async function initialize() {
 
-    try{
+    await loadCampaignConfig();
 
-        await loadModels();
+    await loadModels();
 
-        await startCamera();
+    await startCamera();
 
-        video.addEventListener("play",startDetection);
-
-    }
-    catch(err){
-
-        console.error(err);
-
-        alert("Unable to load AI Camera.");
-
-    }
+    video.addEventListener("play", startDetection);
 
 }
 
@@ -356,7 +354,14 @@ function switchCampaign(name){
     currentCampaign = name;
     lastCampaignChange = now;
 
-    const campaign = campaigns[name];
+  
+const campaign = campaigns[name];
+
+campaignImage.src = `${MEDIA_PATH}/${campaign.media[0].file}`;
+
+campaignTitle.textContent = campaign.title;
+
+campaignSubtitle.textContent = campaign.subtitle;
 
     if(!campaign) return;
 

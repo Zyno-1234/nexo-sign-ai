@@ -1,0 +1,39 @@
+"default": {
+    "media": [
+        {
+            "type": "image",
+            "file": "default.png",
+            "duration": 10000
+        }
+    ]
+},
+
+"male": {
+    "media": [
+        {
+            "type": "image",
+            "file": "men.png",
+            "duration": 10000
+        }
+    ]
+},
+
+"female": {
+    "media": [
+        {
+            "type": "image",
+            "file": "women.png",
+            "duration": 10000
+        }
+    ]
+},
+
+"kids": {
+    "media": [
+        {
+            "type": "image",
+            "file": "kids.png",
+            "duration": 10000
+        }
+    ]
+}
