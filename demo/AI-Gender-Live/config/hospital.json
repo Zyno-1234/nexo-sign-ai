@@ -1,41 +1,49 @@
 {
-    "default": {
-        "media": [
-            {
-                "type": "image",
-                "file": "default.png",
-                "duration": 10000
-            }
-        ]
-    },
+  "default": {
+    "title": "Welcome to NEXO AI",
+    "subtitle": "Smart Digital Signage Platform",
+    "media": [
+      {
+        "type": "image",
+        "file": "default.png",
+        "duration": 10000
+      }
+    ]
+  },
 
-    "male": {
-        "media": [
-            {
-                "type": "image",
-                "file": "men.png",
-                "duration": 10000
-            }
-        ]
-    },
+  "male": {
+    "title": "Men's Health",
+    "subtitle": "Book your preventive health checkup today.",
+    "media": [
+      {
+        "type": "image",
+        "file": "men.png",
+        "duration": 10000
+      }
+    ]
+  },
 
-    "female": {
-        "media": [
-            {
-                "type": "image",
-                "file": "women.png",
-                "duration": 10000
-            }
-        ]
-    },
+  "female": {
+    "title": "Women's Wellness",
+    "subtitle": "Comprehensive care for every stage of life.",
+    "media": [
+      {
+        "type": "image",
+        "file": "women.png",
+        "duration": 10000
+      }
+    ]
+  },
 
-    "kids": {
-        "media": [
-            {
-                "type": "image",
-                "file": "kids.png",
-                "duration": 10000
-            }
-        ]
-    }
+  "kids": {
+    "title": "Kids Care",
+    "subtitle": "Friendly pediatric specialists for your little ones.",
+    "media": [
+      {
+        "type": "image",
+        "file": "kids.png",
+        "duration": 10000
+      }
+    ]
+  }
 }

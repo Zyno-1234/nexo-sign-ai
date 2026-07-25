@@ -64,33 +64,21 @@ let campaigns = {};
 //==============================
 
 async function loadCampaignConfig() {
-
     try {
-
         const response = await fetch(`config/${industry}.json`);
 
         if (!response.ok) {
             throw new Error(`Unable to load ${industry}.json`);
         }
 
-        const text = await response.text();
-
-        console.log("Industry:", industry);
-        console.log("Raw JSON:");
-        console.log(text);
-
-        campaigns = JSON.parse(text);
+        campaigns = await response.json();
 
         console.log("Campaign Config Loaded");
         console.log(campaigns);
 
+    } catch (err) {
+        console.error(err);
     }
-    catch (err) {
-
-        console.error("JSON ERROR:", err);
-
-    }
-
 }
 //==============================
 // Logger
