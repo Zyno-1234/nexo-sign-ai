@@ -9,17 +9,16 @@
 const industry =    localStorage.getItem("selectedIndustry") || "hospital";
 
 const MEDIA_PATH = `media/${industry}`;
+const MODEL_URL = "models";
 
 // ================================
 // Load Industry Configuration
 // ================================
 
-const selectedIndustry =
+const industry =
     localStorage.getItem("selectedIndustry") || "hospital";
 
-let industryConfig = null;
-
-
+const MEDIA_PATH = `media/${industry}`;
 
 // Media root folder
 
@@ -357,20 +356,21 @@ function switchCampaign(name){
   
 const campaign = campaigns[name];
 
+if (!campaign)
+    return;
+
 campaignImage.src = `${MEDIA_PATH}/${campaign.media[0].file}`;
 
 campaignTitle.textContent = campaign.title;
 
 campaignSubtitle.textContent = campaign.subtitle;
 
-    if(!campaign) return;
-
     // Fade Out
     campaignImage.classList.add("fade-out");
 
     setTimeout(()=>{
 
-        campaignImage.src = campaign.image;
+        campaignImage.src = `${MEDIA_PATH}/${campaign.media[0].file}`;
 
         campaignTitle.innerText = campaign.title;
         campaignSubtitle.innerText = campaign.subtitle;
