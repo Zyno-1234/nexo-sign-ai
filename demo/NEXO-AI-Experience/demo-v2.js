@@ -4,6 +4,174 @@
 // Version: 2.1
 // ======================================================
 
+// ===========================================
+// AI Detection Configuration
+// ===========================================
+
+const MODEL_URL = "./models";
+
+const MIN_CONFIDENCE = 0.65;
+const DETECTION_INTERVAL = 150;
+const STABLE_DETECTION_COUNT = 2;
+const CAMPAIGN_HOLD_TIME = 1000;
+const NO_FACE_TIMEOUT = 1000;
+
+let currentCampaign = "default";
+let lastCampaignChange = 0;
+let detectionRunning = false;
+
+let stableCount = 0;
+let lastDetectedCampaign = "";
+
+let noFaceTimer = null;
+
+async function loadModels(){
+
+    await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+
+    await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL);
+
+    console.log("AI Models Loaded");
+
+}
+
+
+// ======================================================
+// AI Detection Engine
+// ======================================================
+
+async function startDetection() {
+
+    if (detectionRunning)
+        return;
+
+    detectionRunning = true;
+
+    console.log("AI Detection Started");
+
+    setInterval(async () => {
+
+        if (!App.cameraReady)
+            return;
+
+        if (!UI.camera)
+            return;
+
+        const result = await faceapi
+            .detectSingleFace(
+                UI.camera,
+                new faceapi.TinyFaceDetectorOptions({
+                    inputSize: 320,
+                    scoreThreshold: 0.25
+                })
+            )
+            .withAgeAndGender();
+
+        // -----------------------------------
+        // No Face
+        // -----------------------------------
+
+        if (!result) {
+
+            stableCount = 0;
+            lastDetectedCampaign = "";
+
+            if (!noFaceTimer) {
+
+                noFaceTimer = setTimeout(() => {
+
+                    currentCampaign = "default";
+                    App.currentAudience = "default";
+
+                    resetExperience();
+
+                    noFaceTimer = null;
+
+                }, NO_FACE_TIMEOUT);
+
+            }
+
+            return;
+
+        }
+
+        if (noFaceTimer) {
+
+            clearTimeout(noFaceTimer);
+            noFaceTimer = null;
+
+        }
+
+        // -----------------------------------
+        // Confidence Check
+        // -----------------------------------
+
+        if (
+            result.genderProbability &&
+            result.genderProbability < MIN_CONFIDENCE
+        )
+            return;
+
+        // -----------------------------------
+        // Decide Audience
+        // -----------------------------------
+
+        let detected = "default";
+
+        if (result.age <= 15)
+            detected = "kids";
+
+        else if (result.gender === "male")
+            detected = "male";
+
+        else
+            detected = "female";
+
+        // -----------------------------------
+        // Stable Detection
+        // -----------------------------------
+
+        if (lastDetectedCampaign === detected)
+            stableCount++;
+        else {
+
+            stableCount = 1;
+            lastDetectedCampaign = detected;
+
+        }
+
+        if (stableCount < STABLE_DETECTION_COUNT)
+            return;
+
+        // -----------------------------------
+        // Hold Campaign
+        // -----------------------------------
+
+        const now = Date.now();
+
+        if (
+            currentCampaign === detected &&
+            now - lastCampaignChange < CAMPAIGN_HOLD_TIME
+        )
+            return;
+
+        currentCampaign = detected;
+        lastCampaignChange = now;
+
+        onAudienceDetected({
+
+            gender: detected,
+            age: Math.round(result.age),
+            confidence: Math.round(
+                (result.genderProbability || 0) * 100
+            )
+
+        });
+
+    }, DETECTION_INTERVAL);
+
+}
+
 // -------------------------------
 // Global Application State
 // -------------------------------
@@ -417,7 +585,22 @@ function onAudienceDetected(data) {
 
     console.log(data);
 
-    App.currentAudience = data.gender;
+   App.currentAudience = data.gender;
+
+if (App.debug) {
+
+    console.log(
+        "Audience:",
+        data.gender,
+        "Age:",
+        data.age,
+        "Confidence:",
+        data.confidence + "%"
+    );
+
+}
+
+
 
     let audience = "default";
 
@@ -486,10 +669,13 @@ function startCampaignRotation() {
 // ======================================================
 // Reset Experience
 // ======================================================
-
 function resetExperience() {
 
     App.currentAudience = "default";
+
+    currentCampaign = "default";
+    stableCount = 0;
+    lastDetectedCampaign = "";
 
     updateCampaign("default");
 
@@ -509,6 +695,10 @@ function resetExperience() {
 // ======================================================
 // Application Startup
 // ======================================================
+// ======================================================
+// Application Startup
+// ======================================================
+
 window.addEventListener("DOMContentLoaded", async () => {
 
     console.log("Starting NEXO AI Experience Platform...");
@@ -517,11 +707,17 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     await loadConfiguration();
 
+    await loadModels();
+
     await startCamera();
 
     monitorCamera();
 
+    startDetection();
+
     startCampaignRotation();
+
+    App.aiReady = true;
 
     setTimeout(() => {
 
