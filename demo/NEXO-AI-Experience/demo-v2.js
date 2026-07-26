@@ -11,10 +11,11 @@
 const MODEL_URL = "./models";
 
 const MIN_CONFIDENCE = 0.65;
-const DETECTION_INTERVAL = 150;
-const STABLE_DETECTION_COUNT = 2;
-const CAMPAIGN_HOLD_TIME = 1000;
+const DETECTION_INTERVAL = 350;
+const STABLE_DETECTION_COUNT = 5;
+const CAMPAIGN_HOLD_TIME = 5000;
 const NO_FACE_TIMEOUT = 1000;
+
 
 let currentCampaign = "default";
 let lastCampaignChange = 0;
@@ -627,6 +628,8 @@ if (App.debug) {
     if (App.currentCampaign === audience)
         return;
 
+    if (App.currentCampaign !== audience) {
+
     showPersonalization("Preparing your personalized experience...");
 
     setTimeout(() => {
@@ -634,8 +637,7 @@ if (App.debug) {
         updateCampaign(audience);
 
         if (UI.experienceTitle)
-            UI.experienceTitle.textContent =
-                "Personalization Active";
+            UI.experienceTitle.textContent = "Personalization Active";
 
         if (UI.experienceMessage)
             UI.experienceMessage.textContent =
@@ -644,6 +646,8 @@ if (App.debug) {
         hidePersonalization();
 
     }, 700);
+
+}
 
 }
 
