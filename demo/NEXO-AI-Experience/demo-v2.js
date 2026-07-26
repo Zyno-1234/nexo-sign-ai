@@ -538,21 +538,12 @@ function resetExperience() {
 
 // Example integration
 
-onAudienceDetected({
 
-    gender: detectedGender,
-    age: detectedAge,
-    confidence: genderProbability
-
-});
-
-resetExperience();
 
 
 // ======================================================
 // Application Startup
 // ======================================================
-
 window.addEventListener("DOMContentLoaded", async () => {
 
     console.log("Starting NEXO AI Experience Platform...");
