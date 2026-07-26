@@ -323,20 +323,19 @@ async function loadConfiguration() {
 
     try {
 
-        const response = await fetch(
-            `config/${App.industry}.json`
-        );
+        const response =
+            await fetch(`config/${App.industry}.json`);
+
+        if (!response.ok)
+            throw new Error("Configuration file not found");
 
         App.config = await response.json();
 
-        console.log(
-            "Industry Loaded:",
-            App.industry
-        );
+        App.campaigns = App.config;
 
-        App.campaigns = App.config.campaigns;
+        updateCampaign("default");
 
-        updateCampaign(0);
+        console.log("Configuration Loaded");
 
     }
     catch (error) {
@@ -345,7 +344,7 @@ async function loadConfiguration() {
 
         showToast(
             "Configuration",
-            "Unable to load industry JSON."
+            "Unable to load industry configuration."
         );
 
     }
@@ -357,72 +356,55 @@ async function loadConfiguration() {
 // Campaign Renderer
 // ======================================================
 
-function updateCampaign(index) {
+// ======================================================
+// Campaign Renderer
+// ======================================================
 
-    if (!App.campaigns.length) return;
+function updateCampaign(audience = "default") {
 
-    const campaign = App.campaigns[index];
+    const campaign = App.campaigns[audience];
 
-    App.currentCampaign = index;
+    if (!campaign) {
+        console.warn("Campaign not found:", audience);
+        return;
+    }
+
+    App.currentCampaign = audience;
 
     if (UI.campaignTitle)
-        UI.campaignTitle.textContent =
-            campaign.title;
+        UI.campaignTitle.textContent = campaign.title || "";
 
     if (UI.campaignSubtitle)
-        UI.campaignSubtitle.textContent =
-            campaign.subtitle;
+        UI.campaignSubtitle.textContent = campaign.subtitle || "";
 
     if (UI.heroCTA)
-        UI.heroCTA.textContent =
-            campaign.cta;
+        UI.heroCTA.textContent = "Learn More";
 
     if (UI.ctaTitle)
-        UI.ctaTitle.textContent =
-            campaign.cta;
+        UI.ctaTitle.textContent = "Learn More";
 
-    // Image
+    // Hero Image
 
     if (
         UI.heroImage &&
-        campaign.image
+        campaign.media &&
+        campaign.media.length
     ) {
 
         UI.heroImage.src =
-            campaign.image;
+            `media/${App.industry}/${campaign.media[0].file}`;
 
     }
 
     // QR
 
-    if (
-        UI.qrImage &&
-        campaign.qr
-    ) {
-
-        UI.qrImage.src =
-            campaign.qr;
-
-    }
+    if (UI.qrImage)
+        UI.qrImage.src = "assets/qr.png";
 
     // Recommendations
 
-    if (UI.recommendationList) {
-
+    if (UI.recommendationList)
         UI.recommendationList.innerHTML = "";
-
-        campaign.recommend.forEach(item => {
-
-            const li =
-                document.createElement("li");
-
-            li.textContent = item;
-
-            UI.recommendationList.appendChild(li);
-
-        });
-
-    }
 
 }
 
@@ -433,41 +415,40 @@ function updateCampaign(index) {
 
 function onAudienceDetected(data) {
 
-    /*
-        data = {
-
-            gender : "male",
-            age : 35,
-            confidence : 0.92
-
-        }
-
-    */
-
-    console.log("Audience Detected:", data);
+    console.log(data);
 
     App.currentAudience = data.gender;
 
-    let campaignIndex = 0;
+    let audience = "default";
 
-    if (data.gender === "male")
-        campaignIndex = 1;
+    switch (data.gender) {
 
-    else if (data.gender === "female")
-        campaignIndex = 2;
+        case "male":
+            audience = "male";
+            break;
 
-    else
-        campaignIndex = 0;
+        case "female":
+            audience = "female";
+            break;
 
-    // Avoid unnecessary updates
-    if (campaignIndex === App.currentCampaign)
+        case "child":
+        case "kids":
+            audience = "kids";
+            break;
+
+        default:
+            audience = "default";
+
+    }
+
+    if (App.currentCampaign === audience)
         return;
 
     showPersonalization("Preparing your personalized experience...");
 
     setTimeout(() => {
 
-        updateCampaign(campaignIndex);
+        updateCampaign(audience);
 
         if (UI.experienceTitle)
             UI.experienceTitle.textContent =
@@ -475,12 +456,7 @@ function onAudienceDetected(data) {
 
         if (UI.experienceMessage)
             UI.experienceMessage.textContent =
-                "Relevant content selected using Vision AI.";
-
-        showToast(
-            "AI Experience",
-            "Campaign updated successfully."
-        );
+                "AI selected the best experience.";
 
         hidePersonalization();
 
@@ -488,33 +464,24 @@ function onAudienceDetected(data) {
 
 }
 
-
 // ======================================================
 // Campaign Rotation
 // ======================================================
 
 function startCampaignRotation() {
 
-    if (App.rotationTimer)
-        clearInterval(App.rotationTimer);
+    clearInterval(App.rotationTimer);
 
     App.rotationTimer = setInterval(() => {
 
-        // Do not rotate if AI is actively personalizing
         if (App.currentAudience !== "default")
             return;
 
-        let next = App.currentCampaign + 1;
-
-        if (next >= App.campaigns.length)
-            next = 0;
-
-        updateCampaign(next);
+        updateCampaign("default");
 
     }, 10000);
 
 }
-
 
 // ======================================================
 // Reset Experience
@@ -524,18 +491,16 @@ function resetExperience() {
 
     App.currentAudience = "default";
 
-    updateCampaign(0);
+    updateCampaign("default");
 
     if (UI.experienceTitle)
-        UI.experienceTitle.textContent =
-            "AI Ready";
+        UI.experienceTitle.textContent = "AI Ready";
 
     if (UI.experienceMessage)
         UI.experienceMessage.textContent =
-            "Waiting for the next visitor.";
+            "Waiting for audience...";
 
 }
-
 // Example integration
 
 
