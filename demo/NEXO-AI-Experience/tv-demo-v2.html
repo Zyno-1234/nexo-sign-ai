@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>NEXO AI Experience Platform</title>
 
 <link rel="stylesheet" href="demo-v2.css">
@@ -10,47 +13,82 @@
 <!-- Google Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
+<!-- ===================================================== -->
+<!-- Loading -->
+<!-- ===================================================== -->
+
 <div id="loadingOverlay">
+
     <div class="loader">
+
         <div class="loader-ring"></div>
+
         <h2>NEXO AI</h2>
+
         <p>Initializing Experience Engine...</p>
+
     </div>
+
 </div>
+
+<!-- ===================================================== -->
+<!-- Header -->
+<!-- ===================================================== -->
 
 <header class="topbar">
 
-<div class="brand">
-    <img src="assets/logo.png" class="logo" alt="NEXO AI">
-    <div>
-        <h1>NEXO AI</h1>
-        <span id="industryName">Hospital Experience</span>
+    <div class="brand">
+
+        <img src="assets/logo.png" class="logo" alt="NEXO AI">
+
+        <div>
+
+            <h1>NEXO AI</h1>
+
+            <span id="industryName">Hospital Experience</span>
+
+        </div>
+
     </div>
-</div>
 
-<div class="statusArea">
+    <div class="statusArea">
 
-<div class="status green">
-<span></span>
-Experience Engine
-</div>
+        <div class="status green">
 
-<div class="status blue">
-<span></span>
-AI Active
-</div>
+            <span></span>
 
-<div class="clock" id="liveClock">10:30 AM</div>
+            Experience Engine
 
-</div>
+        </div>
+
+        <div class="status blue">
+
+            <span></span>
+
+            AI Active
+
+        </div>
+
+        <div class="clock" id="liveClock">
+
+            10:30 AM
+
+        </div>
+
+    </div>
 
 </header>
+
+<!-- ===================================================== -->
+<!-- Main -->
+<!-- ===================================================== -->
 
 <main>
 
@@ -58,22 +96,37 @@ AI Active
 
 <div class="heroMedia">
 
-<video id="heroVideo" autoplay muted loop playsinline></video>
+<video
+id="heroVideo"
+autoplay
+muted
+loop
+playsinline>
+</video>
 
-<img id="heroImage" src="" alt="Campaign">
+<img
+id="heroImage"
+src=""
+alt="Campaign">
 
 <div class="heroOverlay">
 
 <h2 id="campaignTitle">
+
 Welcome to NEXO Hospital
+
 </h2>
 
 <p id="campaignSubtitle">
+
 Delivering intelligent healthcare experiences.
+
 </p>
 
 <button id="heroCTA">
+
 Book Appointment
+
 </button>
 
 </div>
@@ -84,89 +137,118 @@ Book Appointment
 
 <section class="dashboard">
 
+<!-- Camera -->
+
 <div class="card previewCard">
 
 <div class="cardHeader">
+
 Live Experience Preview
+
 </div>
 
 <div class="cameraFrame">
 
-<video id="camera" autoplay muted playsinline></video>
+<video
+id="camera"
+autoplay
+muted
+playsinline>
+</video>
 
 <div class="cameraStatus">
+
 <div class="pulse"></div>
+
 Audience Presence
-</div>
 
 </div>
 
 </div>
+
+</div>
+
+<!-- Experience -->
 
 <div class="card experienceCard">
 
 <div class="cardHeader">
+
 Experience Engine
+
 </div>
 
 <div class="experienceState">
 
 <h3 id="experienceTitle">
+
 Personalization Ready
+
 </h3>
 
 <p id="experienceMessage">
+
 Waiting for audience...
+
 </p>
 
 </div>
 
 <div class="features">
 
-<div class="feature">
-Privacy Protected
-</div>
+<div class="feature">Privacy Protected</div>
 
-<div class="feature">
-Anonymous Insights
-</div>
+<div class="feature">Anonymous Insights</div>
 
-<div class="feature">
-Real-Time Adaptation
-</div>
+<div class="feature">Real-Time Adaptation</div>
 
-<div class="feature">
-Cloud Managed
-</div>
+<div class="feature">Cloud Managed</div>
 
 </div>
 
 </div>
+
+<!-- QR -->
 
 <div class="card qrCard">
 
 <div class="cardHeader">
+
 Quick Action
+
 </div>
 
 <div class="qrBox">
-<img id="qrImage" src="assets/qr.png" alt="QR Code">
+
+<img
+id="qrImage"
+src="assets/qr.png"
+alt="QR">
+
 </div>
 
 <h3 id="ctaTitle">
+
 Book Appointment
+
 </h3>
 
 <p id="ctaText">
+
 Scan to learn more.
+
 </p>
 
 </div>
 
+<!-- Recommendations -->
+
 <div class="card recommendationCard">
 
 <div class="cardHeader">
+
 Recommended Service
+
 </div>
 
 <ul id="recommendations">
@@ -187,30 +269,64 @@ Recommended Service
 
 </main>
 
+<!-- ===================================================== -->
+<!-- Footer -->
+<!-- ===================================================== -->
+
 <footer>
 
 <div class="footerItem">Privacy Protected</div>
+
 <div class="footerItem">AI Powered</div>
+
 <div class="footerItem">Anonymous Insights</div>
+
 <div class="footerItem">Cloud Managed</div>
 
 </footer>
 
+<!-- ===================================================== -->
+<!-- Toast -->
+<!-- ===================================================== -->
+
 <div id="toastContainer"></div>
+
+<!-- ===================================================== -->
+<!-- Overlay -->
+<!-- ===================================================== -->
 
 <div id="personalizationOverlay">
 
 <div class="overlayContent">
 
-<h2>Preparing your personalized experience...</h2>
+<h2>
 
-<p>Please wait</p>
+Preparing your personalized experience...
+
+</h2>
+
+<p>
+
+Please wait
+
+</p>
 
 </div>
 
 </div>
 
-<script src="demo-v2.js"></script>
+<!-- ===================================================== -->
+<!-- Face API -->
+<!-- ===================================================== -->
+
+<script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+<!-- ===================================================== -->
+<!-- Application -->
+<!-- ===================================================== -->
+
+<script defer src="demo-v2.js"></script>
 
 </body>
+
 </html>
